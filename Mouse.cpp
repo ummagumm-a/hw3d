@@ -112,6 +112,13 @@ void Mouse::OnWheelUp(int x, int y) noexcept
 	TrimBuffer();
 }
 
+void Mouse::OnWheelDown(int x, int y) noexcept
+{
+	buffer.push(Mouse::Event(Mouse::Event::Type::WheelDown, *this));
+	TrimBuffer();
+}
+
+
 void Mouse::TrimBuffer() noexcept
 {
 	while (buffer.size() > bufferSize)
