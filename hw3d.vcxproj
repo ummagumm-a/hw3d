@@ -154,12 +154,14 @@
     <ClCompile Include="ChiliException.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="App.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChiliWin.h" />
     <ClInclude Include="ChiliException.h" />
+    <ClInclude Include="App.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="resource.h" />
