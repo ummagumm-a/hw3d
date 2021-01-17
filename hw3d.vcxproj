@@ -157,6 +157,8 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="ChiliTimer.cpp" />
+    <ClCompile Include="dxerr.cpp" />
+    <ClCompile Include="DxgiInfoManager.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
@@ -166,6 +168,8 @@
     <ClInclude Include="App.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="ChiliTimer.h" />
+    <ClInclude Include="dxerr.h" />
+    <ClInclude Include="DxgiInfoManager.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="resource.h" />
@@ -176,6 +180,11 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="icons8-scrunchy-32.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DXGetErrorDescription.inl" />
+    <None Include="DXGetErrorString.inl" />
+    <None Include="DXTrace.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
