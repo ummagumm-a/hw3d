@@ -163,7 +163,7 @@ void Graphics::DrawTestTriangle()
 	pContext->PSSetShader(pPixelShader.Get(), nullptr, 0u);
 
 	// bind render target
-	pContext->OMSetRenderTargets(1u, &pTarget, nullptr);
+	pContext->OMSetRenderTargets(1u, pTarget.GetAddressOf(), nullptr);
 
 	GFX_THROW_INFO_ONLY(pContext->Draw( (UINT) std::size(vertices), 0u));
 }
