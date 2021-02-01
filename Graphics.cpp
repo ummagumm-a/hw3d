@@ -175,6 +175,9 @@ void Graphics::DrawTestTriangle()
 	vp.TopLeftY = 0;
 	pContext->RSSetViewports(1u, &vp);
 
+	// Set primitive topology to triangle list (groups of 3 vertices)
+	pContext->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
 
 	GFX_THROW_INFO_ONLY(pContext->Draw( (UINT) std::size(vertices), 0u));
 }
