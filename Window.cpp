@@ -2,7 +2,6 @@
 #include <sstream>
 #include "resource.h"
 
-
 // Window Class Stuff
 Window::WindowClass Window::WindowClass::wndClass;
 
@@ -109,9 +108,9 @@ std::optional<int> Window::ProcessMessagesA() noexcept
 		// TranslateMessage will post auxilliary WM_CHAR messages from key msgs
 		TranslateMessage(&msg);
 		DispatchMessageA(&msg);
-
-		return {};
 	}
+
+	return {};
 }
 
 Graphics& Window::Gfx()
