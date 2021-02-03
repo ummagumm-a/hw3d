@@ -117,28 +117,19 @@ void Graphics::DrawTestTriangle(float angle, float x, float y)
 			float y;
 			float z;
 		} pos;
-
-		struct
-		{
-			unsigned char r;
-			unsigned char g;
-			unsigned char b;
-			unsigned char a;
-		} color;
-
 	};
 
 	// create vertex buffer (1 2d triangle at center of screen)
 	Vertex vertices[] =
 	{
-		{ 1.0f, 1.0f, -1.0f, 105.0f, 104.0f, 91.0f, 0 },
-		{ 1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0 },
-		{ -1.0f, -1.0f, -1.0f, 105.0f, 104.0f, 91.0f, 0 },
-		{ -1.0f, 1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0 },
-		{ 1.0f, 1.0f, 1.0f, 105.0f, 104.0f, 91.0f, 0 },
-		{ 1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0 },
-		{ -1.0f, -1.0f, 1.0f, 105.0f, 104.0f, 91.0f, 0 },
-		{ -1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0 },
+		{ 1.0f, 1.0f, -1.0f },
+		{ 1.0f, -1.0f, -1.0f },
+		{ -1.0f, -1.0f, -1.0f },
+		{ -1.0f, 1.0f, -1.0f },
+		{ 1.0f, 1.0f, 1.0f },
+		{ 1.0f, -1.0f, 1.0f },
+		{ -1.0f, -1.0f, 1.0f },
+		{ -1.0f, 1.0f, 1.0f },
 	};
 
 	wrl::ComPtr<ID3D11Buffer> pVertexBuffer;
@@ -166,7 +157,7 @@ void Graphics::DrawTestTriangle(float angle, float x, float y)
 
 		0, 5, 1,
 		0, 4, 5,
-		
+
 		3, 2, 6,
 		3, 6, 7,
 
@@ -209,7 +200,7 @@ void Graphics::DrawTestTriangle(float angle, float x, float y)
 				dx::XMMatrixRotationZ(angle) *
 				dx::XMMatrixTranslation(0.0f, 0.0f, 4.0f) *
 				dx::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 10.0f)
-			)			
+			)
 		}
 	};
 
@@ -227,6 +218,45 @@ void Graphics::DrawTestTriangle(float angle, float x, float y)
 
 	// bind constant buffer to vertex shader
 	pContext->VSSetConstantBuffers(0u, 1u, pConstantBuffer.GetAddressOf());
+
+	// create constant buffer with colors for each face of the cube
+	struct ConstantBuffer2
+	{
+		struct
+		{
+			float r;
+			float g;
+			float b;
+			float a;
+		} face_colors[6];
+	};
+
+	const ConstantBuffer2 cb2
+	{
+		{
+			{1.0f, 0.0f, 1.0f},
+			{1.0f, 0.0f, 0.0f},
+			{1.0f, 1.0f, 1.0f},
+			{0.0f, 0.0f, 1.0f},
+			{0.0f, 1.0f, 1.0f},
+			{0.0f, 1.0f, 0.0f},
+		}
+	};
+
+	wrl::ComPtr<ID3D11Buffer> pConstantBuffer2;
+	D3D11_BUFFER_DESC cbd2 = {};
+	cbd2.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbd2.Usage = D3D11_USAGE_DYNAMIC;
+	cbd2.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	cbd2.MiscFlags = 0u;
+	cbd2.ByteWidth = sizeof(cb2);
+	cbd2.StructureByteStride = 0u;
+	D3D11_SUBRESOURCE_DATA csd2 = {};
+	csd2.pSysMem = &cb2;
+	GFX_THROW_INFO(pDevice->CreateBuffer(&cbd2, &csd2, &pConstantBuffer2));
+
+	// bind constant buffer to the pixel shader
+	pContext->PSSetConstantBuffers(0u, 1u, pConstantBuffer2.GetAddressOf());
 
 	// create pixel shader
 	wrl::ComPtr<ID3D11PixelShader> pPixelShader;
@@ -258,7 +288,6 @@ void Graphics::DrawTestTriangle(float angle, float x, float y)
 	const D3D11_INPUT_ELEMENT_DESC ied[] =
 	{
 		{"Position", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{"Color", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, 12u, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 
 	GFX_THROW_INFO(pDevice->CreateInputLayout(
