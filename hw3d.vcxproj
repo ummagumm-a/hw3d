@@ -170,6 +170,8 @@
     <ClInclude Include="ChiliTimer.h" />
     <ClInclude Include="dxerr.h" />
     <ClInclude Include="DxgiInfoManager.h" />
+    <ClInclude Include="GraphicsThrowMacros.h" />
+    <ClInclude Include="WindowsThrowMacros.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="resource.h" />

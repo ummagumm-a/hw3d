@@ -1,6 +1,7 @@
 #include "Window.h"
 #include <sstream>
 #include "resource.h"
+#include "WindowsThrowMacros.h"
 
 // Window Class Stuff
 Window::WindowClass Window::WindowClass::wndClass;
@@ -211,6 +212,7 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	{
 		const POINTS pt = MAKEPOINTS(lParam);
 		mouse.OnLeftPressed(pt.x, pt.y);
+		SetForegroundWindow(hWnd);
 		break;
 	}
 	case WM_MBUTTONDOWN:
