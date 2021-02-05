@@ -81,7 +81,7 @@ Pyramid::Pyramid(Graphics& gfx,
 			//7, 3, 5
 		};
 
-		AddIndexBuffer(std::make_unique<IndexBuffer>(gfx, indices));
+		AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, indices));
 
 		struct ConstantBuffer2
 		{
@@ -122,6 +122,10 @@ Pyramid::Pyramid(Graphics& gfx,
 
 		AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 	}
+	else
+	{
+		SetIndexFromStatic();
+	}
 
 	AddBind(std::make_unique<TransformCbuf>(gfx, *this));
 }
@@ -138,7 +142,7 @@ void Pyramid::Update(float dt) noexcept
 
 DirectX::XMMATRIX Pyramid::GetTransformXM() const noexcept
 {
-	return 
+	return
 		DirectX::XMMatrixRotationRollPitchYaw(pitch, yaw, roll) *
 		DirectX::XMMatrixTranslation(r, 0.0f, 0.0f) *
 		DirectX::XMMatrixRotationRollPitchYaw(theta, phi, chi) *
