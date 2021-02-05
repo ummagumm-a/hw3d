@@ -1,7 +1,7 @@
 #pragma once
-#include "Drawable.h"
+#include "DrawableBase.h"
 
-class Pyramid : public Drawable
+class Pyramid : public DrawableBase<Pyramid>
 {
 public:
 	Pyramid(Graphics& gfx, std::mt19937& rng,
