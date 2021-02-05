@@ -96,6 +96,9 @@
     <ClCompile Include="Box.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
+    <ClCompile Include="Pyramid.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChiliWin.h">
@@ -171,6 +174,9 @@
       <Filter>Drawable</Filter>
     </ClInclude>
     <ClInclude Include="Box.h">
+      <Filter>Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Pyramid.h">
       <Filter>Drawable</Filter>
     </ClInclude>
   </ItemGroup>
