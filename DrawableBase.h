@@ -2,7 +2,7 @@
 #include "Drawable.h"
 #include "IndexBuffer.h"
 
-template<class T>
+template<class T> 
 class DrawableBase : public Drawable
 {
 public:
