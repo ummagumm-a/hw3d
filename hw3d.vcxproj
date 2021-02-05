@@ -187,6 +187,7 @@
     <ClInclude Include="GraphicsThrowMacros.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="Box.h" />
+    <ClInclude Include="DrawableBase.h" />
     <ClInclude Include="Pyramid.h" />
     <ClInclude Include="TransformCbuf.h" />
     <ClInclude Include="IndexBuffer.h" />
