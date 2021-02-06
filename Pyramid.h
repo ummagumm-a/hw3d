@@ -27,6 +27,4 @@ private:
 	float dtheta;
 	float dphi;
 	float dchi;
-
-	bool trigger = true;
 };

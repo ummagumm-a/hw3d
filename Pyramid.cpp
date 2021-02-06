@@ -1,6 +1,8 @@
 #include "Pyramid.h"
 #include "BindableBase.h"
 #include "GraphicsThrowMacros.h"
+#include "Cone.h"
+
 
 Pyramid::Pyramid(Graphics& gfx,
 	std::mt19937& rng,
@@ -20,104 +22,47 @@ Pyramid::Pyramid(Graphics& gfx,
 	theta(adist(rng)),
 	phi(adist(rng))
 {
+	namespace dx = DirectX;
+
 	if (!IsStaticInitialized())
 	{
 		struct Vertex
 		{
+			dx::XMFLOAT3 pos;
 			struct
 			{
-				float x;
-				float y;
-				float z;
-			} pos;
+				unsigned char r;
+				unsigned char g;
+				unsigned char b;
+				unsigned char a;
+			} color;
 		};
+		auto model = Cone::MakeTesselated<Vertex>(4);
+		// set vertex colors for mesh
+		model.vertices[0].color = { 255,255,0 };
+		model.vertices[1].color = { 255,255,0 };
+		model.vertices[2].color = { 255,255,0 };
+		model.vertices[3].color = { 255,255,0 };
+		model.vertices[4].color = { 255,255,80 };
+		model.vertices[5].color = { 255,10,0 };
+		// deform mesh linearly
+		model.Transform(dx::XMMatrixScaling(1.0f, 1.0f, 0.7f));
 
-		const std::vector<Vertex> vertices =
-		{
-			{0.0f, 2.0f, 0.0f},
-			{1.0f, 0.0f, 1.0f},
-			{1.0f, 0.0f, -1.0f},
-			{-1.0f, 0.0f, -1.0f},
-			{-1.0f, 0.0f, 1.0f},
-			//{0.0f, 2.0f, 0.0f},
-			//{1.0f, 0.0f, 1.0f},
-			//{1.0f, 0.0f, 0.0f},
-			//{1.0f, 0.0f, -1.0f},
-			//{0.0f, 0.0f, -1.0f},
-			//{-1.0f, 0.0f, -1.0f},
-			//{-1.0f, 0.0f, 0.0f},
-			//{-1.0f, 0.0f, 1.0f},
-			//{0.0f, 0.0f, 1.0f},
-		};
+		AddStaticBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
 
-		AddStaticBind(std::make_unique<VertexBuffer>(gfx, vertices));
-
-		auto pvs = std::make_unique<VertexShader>(gfx, L"VertexShader.cso");
+		auto pvs = std::make_unique<VertexShader>(gfx, L"ColorBlendVS.cso");
 		auto pvsbc = pvs->GetBytecode();
 		AddStaticBind(std::move(pvs));
 
-		AddStaticBind(std::make_unique<PixelShader>(gfx, L"PixelShader.cso"));
+		AddStaticBind(std::make_unique<PixelShader>(gfx, L"ColorBlendPS.cso"));
 
-		const std::vector<unsigned short> indices =
-		{
-			0, 2, 1,
-			0, 3, 2,
-			0, 4, 3,
-			0, 1, 4,
-
-			1, 2, 3,
-			1, 3, 4,
-
-			//0, 2, 1,
-			//0, 3, 2,
-			//0, 4, 3,
-			//0, 5, 4,
-			//0, 6, 5,
-			//0, 7, 6,
-			//0, 8, 7,
-			//0, 1, 8,
-
-			//1, 3, 7,
-			//7, 3, 5
-		};
-
-		AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, indices));
-
-		struct ConstantBuffer2
-		{
-			struct
-			{
-				float r;
-				float g;
-				float b;
-				float a;
-			} face_colors[6];
-		};
-
-		const ConstantBuffer2 cb2 =
-		{
-			{
-				{1.0f, 0.0f, 1.0f},
-				{0.0f, 0.0f, 1.0f},
-				{0.5f, 0.5f, 1.0f},
-				{1.0f, 0.0f, 0.0f},
-				{0.0f, 0.0f, 0.0f},
-				{0.0f, 0.0f, 0.0f},
-				//{1.0f, 0.0f, 1.0f},
-				//{0.0f, 1.0f, 1.0f},
-				//{1.0f, 0.0f, 1.0f},
-				//{1.0f, 0.0f, 0.0f},
-				//{1.0f, 0.0f, 1.0f},
-			}
-		};
-
-		AddStaticBind(std::make_unique<PixelConstantBuffer<ConstantBuffer2>>(gfx, cb2));
+		AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, model.indices));
 
 		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
 		{
-			{"Position", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
+			{ "Color",0,DXGI_FORMAT_R8G8B8A8_UNORM,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
 		};
-
 		AddStaticBind(std::make_unique<InputLayout>(gfx, ied, pvsbc));
 
 		AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
@@ -142,9 +87,9 @@ void Pyramid::Update(float dt) noexcept
 
 DirectX::XMMATRIX Pyramid::GetTransformXM() const noexcept
 {
-	return
-		DirectX::XMMatrixRotationRollPitchYaw(pitch, yaw, roll) *
-		DirectX::XMMatrixTranslation(r, 0.0f, 0.0f) *
-		DirectX::XMMatrixRotationRollPitchYaw(theta, phi, chi) *
-		DirectX::XMMatrixTranslation(0.0f, 0.0f, 20.0f);
+	namespace dx = DirectX;
+	return dx::XMMatrixRotationRollPitchYaw(pitch, yaw, roll) *
+		dx::XMMatrixTranslation(r, 0.0f, 0.0f) *
+		dx::XMMatrixRotationRollPitchYaw(theta, phi, chi) *
+		dx::XMMatrixTranslation(0.0f, 0.0f, 20.0f);
 }
