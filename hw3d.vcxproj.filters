@@ -37,6 +37,15 @@
     <Filter Include="Header Files\Geometry">
       <UniqueIdentifier>{9a37332a-6443-4f5f-8c67-43bc194943e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyStuff">
+      <UniqueIdentifier>{e3bf48fb-7a47-47cc-a559-4f38b4d7945b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyStuff\Header Files">
+      <UniqueIdentifier>{1dfb2f6c-9279-4b02-8f40-9671ce88ba82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyStuff\Source Files">
+      <UniqueIdentifier>{8ade35b0-c307-48dd-825b-01c250a81253}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -119,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="Sampler.cpp">
       <Filter>Source Files\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedBox.cpp">
+      <Filter>Source Files\Drawable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -241,6 +253,12 @@
     </ClInclude>
     <ClInclude Include="Sampler.h">
       <Filter>Header Files\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedBox.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="ObamaPrism.h">
+      <Filter>MyStuff\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
