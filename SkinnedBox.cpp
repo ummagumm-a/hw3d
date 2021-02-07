@@ -4,6 +4,8 @@
 #include "Cube.h"
 #include "Surface.h"
 #include "Texture.h"
+#include "ObamaPyramid.h"
+#include "Sampler.h"
 
 
 SkinnedBox::SkinnedBox(Graphics& gfx,
@@ -37,11 +39,12 @@ SkinnedBox::SkinnedBox(Graphics& gfx,
 				float v;
 			} tex;
 		};
-		const auto model = Cube::MakeSkinned<Vertex>();
+		const auto model = ObamaPyramid::MakeSkinned<Vertex>();
 
 		AddStaticBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
 
-		AddStaticBind(std::make_unique<Texture>(gfx, Surface::FromFile("Images\\cube.png")));
+		AddStaticBind(std::make_unique<Texture>(gfx, Surface::FromFile("Images\\obama_pyramid.png")));
+		AddStaticBind(std::make_unique<Sampler>(gfx));
 
 		auto pvs = std::make_unique<VertexShader>(gfx, L"TextureVS.cso");
 		auto pvsbc = pvs->GetBytecode();
@@ -81,8 +84,10 @@ void SkinnedBox::Update(float dt) noexcept
 DirectX::XMMATRIX SkinnedBox::GetTransformXM() const noexcept
 {
 	namespace dx = DirectX;
-	return dx::XMMatrixRotationRollPitchYaw(pitch, yaw, roll) *
-		dx::XMMatrixTranslation(r, 0.0f, 0.0f) *
-		dx::XMMatrixRotationRollPitchYaw(theta, phi, chi) *
-		dx::XMMatrixTranslation(0.0f, 0.0f, 20.0f);
+	return 
+		//dx::XMMatrixRotationRollPitchYaw(pitch, yaw, roll) *
+		//dx::XMMatrixTranslation(r, 0.0f, 0.0f) *
+		dx::XMMatrixRotationRollPitchYaw(-dx::XM_PIDIV2, 0.0f, 0.0f) *
+		dx::XMMatrixRotationRollPitchYaw(0.0f, phi, 0.0f) *
+		dx::XMMatrixTranslation(0.0f, 0.0f, 2.0f);
 }

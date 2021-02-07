@@ -29,27 +29,27 @@ App::App()
 		{
 			switch (typedist(rng))
 			{
+			//case 0:
+			//	return std::make_unique<Pyramid>(
+			//		gfx, rng, adist, ddist,
+			//		odist, rdist
+			//		);
+			//case 1:
+			//	return std::make_unique<Box>(
+			//		gfx, rng, adist, ddist,
+			//		odist, rdist, bdist
+			//		);
+			//case 2:
+			//	return std::make_unique<Melon>(
+			//		gfx, rng, adist, ddist,
+			//		odist, rdist, longdist, latdist
+			//		);
+			//case 3:
+			//	return std::make_unique<Sheet>(
+			//		gfx, rng, adist, ddist,
+			//		odist, rdist
+			//		);
 			case 0:
-				return std::make_unique<Pyramid>(
-					gfx, rng, adist, ddist,
-					odist, rdist
-					);
-			case 1:
-				return std::make_unique<Box>(
-					gfx, rng, adist, ddist,
-					odist, rdist, bdist
-					);
-			case 2:
-				return std::make_unique<Melon>(
-					gfx, rng, adist, ddist,
-					odist, rdist, longdist, latdist
-					);
-			case 3:
-				return std::make_unique<Sheet>(
-					gfx, rng, adist, ddist,
-					odist, rdist
-					);
-			case 4:
 				return std::make_unique<SkinnedBox>(
 					gfx, rng, adist, ddist,
 					odist, rdist
@@ -69,7 +69,7 @@ App::App()
 		std::uniform_real_distribution<float> bdist{ 0.4f,3.0f };
 		std::uniform_int_distribution<int> latdist{ 5,20 };
 		std::uniform_int_distribution<int> longdist{ 10,40 };
-		std::uniform_int_distribution<int> typedist{ 0,4 };
+		std::uniform_int_distribution<int> typedist{ 0,0 };
 	};
 
 	Factory f(wnd.Gfx());
@@ -84,7 +84,7 @@ void App::DoFrame()
 	wnd.Gfx().ClearBuffer(0.07f, 0.0f, 0.12f);
 	for (auto& d : drawables)
 	{
-		d->Update(wnd.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
+		d->Update(wnd.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : 5 * dt);
 		d->Draw(wnd.Gfx());
 	}
 	wnd.Gfx().EndFrame();

@@ -257,7 +257,7 @@
     <ClInclude Include="SkinnedBox.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
-    <ClInclude Include="ObamaPrism.h">
+    <ClInclude Include="ObamaPyramid.h">
       <Filter>MyStuff\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
